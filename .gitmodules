@@ -1,0 +1,9 @@
+[submodule "splash-server"]
+	path = splash-server
+	url = https://github.com/als-computing/splash-server
+[submodule "splash-client"]
+	path = splash-client
+	url = https://github.com/als-computing/splash-client
+[submodule "splash-doc"]
+	path = splash-doc
+	url = https://github.com/als-computing/splash-doc
