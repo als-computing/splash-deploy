@@ -1,0 +1,24 @@
+
+mongo:
+  image: mongo:3.6
+  hostname: mongo
+  mem_limit: 1024m
+  environment:
+    - TZ=US/Pacific
+  expose:
+    - 27017
+    - 28018
+  restart: always
+  entrypoint: [ "/usr/bin/mongod", "--bind_ip", "0.0.0.0" ]
+  volumes:
+    - /data/db:/data/db
+elasticsearch:
+  image: elasticsearch:1.7
+  mem_limit: 1024m
+  environment:
+    - TZ=US/Pacific
+  #volumes:
+    #- /opt/data/elasticsearch:/usr/share/elasticsearch/data
+  expose:
+    - 9200
+    - 9300
