@@ -12,7 +12,7 @@ services:
     ports:
       - 27017:27017
     restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip", "0.0.0.0" ]
+    entrypoint: [ "/usr/bin/mongod", --bind_ip_all]
     volumes:
       - /data/db:/data/db
   elasticsearch:
@@ -29,6 +29,7 @@ services:
     image: nginx
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
     ports:
       - 80:80
       - 443:443
@@ -41,10 +42,12 @@ services:
     stdin_open: true
     tty: true
     environment:
-      MONGO_URL: mongodb://db:27017
+      #MONGO_URL: mongodb://172.18.0.5:27017
+      LOGLEVEL: DEBUG
+      SPLASH_SERVER_DIR: /app/splash
     volumes:
       - ./splash-server/splash:/app/splash 
-      #- ./config.cfg:/home/root/config.cfg
+      - ./config.cfg:/app/splash/config.cfg
     # entrypoint: [ "python", "server.py", "runserver"]
     entrypoint: [ "uwsgi", "--socket", "0.0.0.0:3031", "--uid", "uwsgi", "--master", "--processes", "8", "--protocol", "uwsgi", "--wsgi", "server:app", "--stats", "127.0.0.1:1717", "--stats-http"]
     ports:
