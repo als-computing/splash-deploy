@@ -74,13 +74,11 @@ services:
       - 9200
       - 9300
 
-  # monstache:
-  #   image: rwynn/monstache
-  #   container_name: monstache
-  #   command: -mongo-url=mongodb://db0:27017 -elasticsearch-url=http://elasticsearch0:9200 #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
-  #   restart: unless-stopped
-  #   # networks:
-  #   #   - splash-net
+  monstache:
+    image: rwynn/monstache:rel4
+    container_name: monstache
+    command: -mongo-url=mongodb://db0:27017 -elasticsearch-url=http://elasticsearch0:9200 #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
+    restart: unless-stopped
     
   app:
     build: 
