@@ -2,6 +2,7 @@
 import json
 import pymongo
 import os
+import glob
 
 client = pymongo.MongoClient()
 
@@ -12,15 +13,14 @@ db = client.efrc
 research_experiments = db.experiments
 
 #Ensure the JSON folder created by Fake_seeder is in the current directory
-directory = os.fsencode("./Fake_Experiments")
 
 bulk_inserts = []
-for file in os.listdir(directory):
-     path = os.path.join(directory, file)
-     f = open(path, "r")
-     parsed_f = json.load(f)
+folder = os.path.dirname(os.path.realpath(__file__)) + "/Fake_Experiments/*"
+for path in glob.glob(folder):
+     file = open(path, "r")
+     parsed_f = json.load(file)
      bulk_inserts.append(parsed_f)
-     f.close()
+     file.close()
 
 #Here we insert the files into Mongodb 
 results = research_experiments.insert_many(bulk_inserts)
