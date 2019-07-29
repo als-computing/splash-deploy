@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch, exceptions
 
-ELASTIC_HOST_URL = "localhost:9200"
+ELASTIC_HOST_URL = "localhost:80/search/"
 
 #ATTENTION!!!!!! This must match the name that will be used
 #by monstache which in turn is derived from the mongo collection name

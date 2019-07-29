@@ -9,7 +9,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
   db0:
-    image: mongo:3.6
+    image: mongo:4.1
     hostname: mongo0
     environment:
       - TZ=US/Pacific
@@ -23,7 +23,7 @@ services:
       - /data/db0:/data/db
 
   db1:
-    image: mongo:3.6
+    image: mongo:4.1
     hostname: mongo1
     environment:
       - TZ=US/Pacific
@@ -38,14 +38,16 @@ services:
       - /data/db1:/data/db
 
 ## On Linux hosts, you need to set sysctl -w vm.max_map_count=262144
+## see: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-prod-cluster-composefile
 
   elasticsearch0:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
     container_name: elasticsearch0
     environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      # - cluster.name=docker-cluster
+      # - bootstrap.memory_lock=true
+      #- "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"\
+      - discovery.type=single-node
     ulimits:
       memlock:
         soft: -1
@@ -56,26 +58,26 @@ services:
       - 9200
       - 9300
 
-  elasticsearch1:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.7.2
-    container_name: elasticsearch1
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "discovery.zen.ping.unicast.hosts=elasticsearch0"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - /data/elasticsearch/data1:/usr/share/elasticsearch/data
-    expose:
-      - 9200
-      - 9300
+  # elasticsearch1:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+  #   container_name: elasticsearch1
+  #   environment:
+  #     - cluster.name=docker-cluster
+  #     # - bootstrap.memory_lock=true
+  #     # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #     - "discovery.zen.ping.unicast.hosts=elasticsearch0"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   volumes:
+  #     - /data/elasticsearch/data1:/usr/share/elasticsearch/data
+  #   expose:
+  #     - 9200
+  #     - 9300
 
   monstache:
-    image: rwynn/monstache:rel4
+    image: rwynn/monstache:rel6
     container_name: monstache
     command: -mongo-url=mongodb://db0:27017 -elasticsearch-url=http://elasticsearch0:9200 #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
     restart: unless-stopped
