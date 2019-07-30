@@ -22,7 +22,7 @@ services:
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip", "db0", "--replSet", "rs0"]
     volumes:
-      - /data/db0:/data/db
+      - ${MONGO_DB_0}:/data/db
 
   db1:
     image: mongo:4.1
@@ -37,7 +37,7 @@ services:
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip", "db1", "--replSet", "rs0"]
     volumes:
-      - /data/db1:/data/db
+      - ${MONGO_DB_1}:/data/db
 
 ## On Linux hosts, you need to set sysctl -w vm.max_map_count=262144
 ## see: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-prod-cluster-composefile
@@ -55,7 +55,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - /data/elasticsearch/data0:/usr/share/elasticsearch/data
+      - ${ELASTIC_DATA_0}:/usr/share/elasticsearch/data
     expose:
       - 9200
       - 9300
@@ -73,7 +73,7 @@ services:
   #       soft: -1
   #       hard: -1
   #   volumes:
-  #     - /data/elasticsearch/data1:/usr/share/elasticsearch/data
+  #     - ${ELASTIC_DATA_1}:/usr/share/elasticsearch/data
 
 
   monstache:
