@@ -14,8 +14,7 @@ var cfg = {
   "_id": "rs0",
   "version": 1,
   "members" : [
-   {"_id": 1, "host": "db0:27017"},
-   {"_id": 2, "host": "db1:27017"}
+   {"_id": 1, "host": "db:27017"}
   ],settings: {chainingAllowed: true}
  }
 
