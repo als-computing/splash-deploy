@@ -7,37 +7,38 @@ services:
     - 443:443
     - 9200:9200
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./web/nginx.conf:/etc/nginx/nginx.conf
       - ./splash-client/dist:/usr/share/nginx/html
 
-  db0:
+  db:
     image: mongo:4.1
     hostname: mongo0
     environment:
       - TZ=US/Pacific
     expose:
       - 27017
+      - 27018
     ports:
       - 27017:27017
     restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip", "db0", "--replSet", "rs0"]
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
     volumes:
       - ${MONGO_DB_0}:/data/db
 
-  db1:
-    image: mongo:4.1
-    hostname: mongo1
-    environment:
-      - TZ=US/Pacific
-    expose:
-      - 27017
-      - 28018
-    ports:
-      - 27117:27017
-    restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip", "db1", "--replSet", "rs0"]
-    volumes:
-      - ${MONGO_DB_1}:/data/db
+  # db1:
+  #   image: mongo:4.1
+  #   hostname: mongo1
+  #   environment:
+  #     - TZ=US/Pacific
+  #   expose:
+  #     - 27017
+  #     - 28018
+  #   ports:
+  #     - 27117:27017
+  #   restart: always
+  #   entrypoint: [ "/usr/bin/mongod", "--bind_ip", "db1", "--replSet", "rs0"]
+  #   volumes:
+  #     - ${MONGO_DB_1}:/data/db
 
 ## On Linux hosts, you need to set sysctl -w vm.max_map_count=262144
 ## see: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-prod-cluster-composefile
@@ -79,7 +80,7 @@ services:
   monstache:
     image: rwynn/monstache:rel6
     container_name: monstache
-    command: -mongo-url=mongodb://db0:27017 -elasticsearch-url=http://elasticsearch0:9200 #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
+    command: -mongo-url=mongodb://db:27017 -elasticsearch-url=http://elasticsearch0:9200 #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
     restart: unless-stopped
     
   app:
@@ -94,7 +95,7 @@ services:
       SPLASH_SERVER_DIR: /app/splash
     volumes:
       - ./splash-server/splash:/app/splash 
-      - ./config.cfg:/app/splash/config.cfg
+      - ./app/config.cfg:/app/splash/config.cfg
     # entrypoint: [ "python", "server.py", "runserver"]
     entrypoint: [ "uwsgi", "--socket", "0.0.0.0:3031", "--uid", "uwsgi", "--master", "--processes", "8", "--protocol", "uwsgi", "--wsgi", "server:app", "--stats", "127.0.0.1:1717", "--stats-http"]
     ports:
