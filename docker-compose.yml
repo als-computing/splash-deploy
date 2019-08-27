@@ -25,21 +25,6 @@ services:
     volumes:
       - ${MONGO_DB_0}:/data/db
 
-  # db1:
-  #   image: mongo:4.1
-  #   hostname: mongo1
-  #   environment:
-  #     - TZ=US/Pacific
-  #   expose:
-  #     - 27017
-  #     - 28018
-  #   ports:
-  #     - 27117:27017
-  #   restart: always
-  #   entrypoint: [ "/usr/bin/mongod", "--bind_ip", "db1", "--replSet", "rs0"]
-  #   volumes:
-  #     - ${MONGO_DB_1}:/data/db
-
 ## On Linux hosts, you need to set sysctl -w vm.max_map_count=262144
 ## see: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-prod-cluster-composefile
 
@@ -60,22 +45,6 @@ services:
     expose:
       - 9200
       - 9300
-
-  # elasticsearch1:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
-  #   container_name: elasticsearch1
-  #   environment:
-  #     - cluster.name=docker-cluster
-  #     # - bootstrap.memory_lock=true
-  #     # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-  #     - "discovery.zen.ping.unicast.hosts=elasticsearch0"
-  #   ulimits:
-  #     memlock:
-  #       soft: -1
-  #       hard: -1
-  #   volumes:
-  #     - ${ELASTIC_DATA_1}:/usr/share/elasticsearch/data
-
 
   monstache:
     image: rwynn/monstache:rel6
