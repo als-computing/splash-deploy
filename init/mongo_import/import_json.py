@@ -7,7 +7,7 @@ import glob
 client = pymongo.MongoClient()
 
 #Ensure that there is a database called efrc before runing this script!!!!
-db = client.efrc
+db = client.splash
 
 #Ensure that there exists a collection called experiments before running this script!!!!!!
 research_experiments = db.experiments

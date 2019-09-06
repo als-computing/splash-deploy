@@ -6,9 +6,9 @@ ELASTIC_HOST_URL = "localhost:80/search/"
 #by monstache which in turn is derived from the mongo collection name
 #the naming schema goes as such: [database_name].[collection_name], for example say 
 #we had a collection named 'experiments', and this collection was in a database called 'efrc'
-#the index name monstache will use is 'efrc.experiments'
+#the index name monstache will use is 'splash.experiments'
 #https://rwynn.github.io/monstache-site/start/
-INDEX_NAME = "efrc.experiments"
+INDEX_NAME = "splash.experiments"
 
 #this is the configuration for the new index
 #find documentation on this here https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html
