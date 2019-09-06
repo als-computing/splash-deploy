@@ -21,7 +21,7 @@ services:
     ports:
       - 27017:27017
     restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+    entrypoint: [ "/usr/bin/mongod", "--auth", "--bind_ip_all", "--replSet", "rs0"]
     volumes:
       - ${MONGO_DB_0}:/data/db
 
