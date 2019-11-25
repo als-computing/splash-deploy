@@ -1,6 +1,6 @@
 docker-compose up -d
 
-docker exec -it splash_db0_1 /bin/bash
+docker exec -it splash_db_1 /bin/bash
 
 
 echo mongo --host db0:27017 
