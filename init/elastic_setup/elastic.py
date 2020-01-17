@@ -8,7 +8,7 @@ ELASTIC_HOST_URL = "localhost:80/search/"
 #we had a collection named 'experiments', and this collection was in a database called 'efrc'
 #the index name monstache will use is 'efrc.experiments'
 #https://rwynn.github.io/monstache-site/start/
-INDEX_NAME = "efrc.experiments"
+INDEX_NAME = "research_experiments"
 
 #this is the configuration for the new index
 #find documentation on this here https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html

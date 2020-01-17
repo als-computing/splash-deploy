@@ -25,4 +25,4 @@ for path in glob.glob(folder):
 #Here we insert the files into Mongodb 
 results = research_experiments.insert_many(bulk_inserts)
 
-print(str(results)
+print(str(results))
