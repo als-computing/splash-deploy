@@ -3,7 +3,7 @@ docker-compose up -d
 docker exec -it splash_db_1 /bin/bash
 
 
-echo mongo --host db0:27017 
+echo mongo --host db:27017 
 
 echo above will get you logged into the mongo command line, but
 echo you need to manually type after:
