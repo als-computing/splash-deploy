@@ -59,13 +59,10 @@ services:
     stdin_open: true
     tty: true
     environment:
-      #MONGO_URL: mongodb://172.18.0.5:27017
       LOGLEVEL: DEBUG
       SPLASH_SERVER_DIR: /app/splash
     volumes:
-      - ./splash-server/splash:/app/splash 
-      - ./app/config.cfg:/app/splash/config.cfg
-    # entrypoint: [ "python", "server.py", "runserver"]
-    entrypoint: [ "uwsgi", "--socket", "0.0.0.0:3031", "--uid", "uwsgi", "--master", "--processes", "8", "--protocol", "uwsgi", "--wsgi", "server:app", "--stats", "127.0.0.1:1717", "--stats-http"]
+      - ../splash-server:/app
+    entrypoint: [ "uwsgi", "--socket", "0.0.0.0:3031", "--uid", "uwsgi", "--master", "--processes", "2", "--protocol", "uwsgi", "--wsgi-file", "run.py", "--callable", "app", "--stats", "127.0.0.1:1717", "--stats-http"]
     ports:
       - 8000:8000
