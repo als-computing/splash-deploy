@@ -1,5 +1,16 @@
+# This override file is for development only and should be removed in
+# a production system.
 version: "2.2"
 services:
+  web:
+    image: nginx
+    ports:
+    - 80:80
+    - 443:443
+    - 9200:9200
+    volumes:
+      - ./web/nginx.conf:/etc/nginx/nginx.conf
+      - ../splash-client/dist:/usr/share/nginx/html
   app:
     build: ../splash-server
     ports:
@@ -11,3 +22,13 @@ services:
     volumes:
       - ../splash-server:/app
     entrypoint: ["flask", "run", "--host=0.0.0.0"]
+
+  vue:
+    build:
+      context: ../splash-client
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../splash-client:/app
+    entrypoint: ["npm", "run", "serve"]
