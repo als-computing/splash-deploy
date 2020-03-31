@@ -30,8 +30,8 @@ def generate_bulk_file():
     for i in research_projects:
         serialized_project = json.dumps(i.data)
         #IMPORTANT!!!!!!!!!!!! This metadata dict specifies that the JSON objects in the bulkfile is to be uploaded to the alias
-        # research_experiments, change this if you want them to be uploaded to a different index! https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
-        metadata = {"index": {"_index": "research_experiments", "_id": str(num)}}
+        # experiments, change this if you want them to be uploaded to a different index! https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
+        metadata = {"index": {"_index": "experiments", "_id": str(num)}}
         f.write(json.dumps(metadata) + "\n")
         f.write(serialized_project + "\n")
         num+=1 
