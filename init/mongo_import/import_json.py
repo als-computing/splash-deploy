@@ -7,10 +7,10 @@ import glob
 client = pymongo.MongoClient()
 
 #Ensure that there is a database called efrc before runing this script!!!!
-db = client.efrc
+db = client.splash
 
 #Ensure that there exists a collection called experiments before running this script!!!!!!
-research_experiments = db.experiments
+experiments = db.experiments
 
 #Ensure the JSON folder created by Fake_seeder is in the current directory
 
@@ -23,6 +23,6 @@ for path in glob.glob(folder):
      file.close()
 
 #Here we insert the files into Mongodb 
-results = research_experiments.insert_many(bulk_inserts)
+results = experiments.insert_many(bulk_inserts)
 
 print(str(results))

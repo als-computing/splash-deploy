@@ -8,7 +8,7 @@ ELASTIC_HOST_URL = "localhost:80/search/"
 #we had a collection named 'experiments', and this collection was in a database called 'efrc'
 #the index name monstache will use is 'efrc.experiments'
 #https://rwynn.github.io/monstache-site/start/
-INDEX_NAME = "research_experiments"
+INDEX_NAME = "experiments"
 
 #this is the configuration for the new index
 #find documentation on this here https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html
@@ -111,9 +111,9 @@ es.indices.create(index=INDEX_NAME, body=INDEX_CONFIG)
 #This will allow us to set an alias for the index.
 #This is so that no matter what the actual index name is, the client code can
 #always refer to the same url endpoint. We have associated the alias
-#research_experiments, with the index name
+#experiments, with the index name
 #https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html
 #https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.client.IndicesClient.put_alias
  
-es.indices.put_alias(index=INDEX_NAME, name="research_experiments")
+es.indices.put_alias(index=INDEX_NAME, name="experiments")
 
