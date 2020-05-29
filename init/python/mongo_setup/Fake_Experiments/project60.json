@@ -1,0 +1,82 @@
+{
+    "name": "streamline granular e-commerce tests",
+    "technique": {
+        "name": "sample_technique",
+        "technique_metadata": {
+            "some_stuff": "some more things",
+            "some_more_stuff": "some things"
+        }
+    },
+    "experiment_metadata": {
+        "gap": "2"
+    },
+    "researcher": {
+        "mwet_id": "5d74341b-533a-473d-9728-bd28ddfc2afc",
+        "name": "Alexis Whitney",
+        "group": "Carr",
+        "institution": "UT"
+    },
+    "experimental_conditions": {
+        "run_time": "7 days",
+        "membrane_or_polymer_area": "1 cm^2"
+    },
+    "trials": [
+        {
+            "membrane_or_polymer": "M58",
+            "ph": 7,
+            "ionic_strength": {
+                "value": 0.01,
+                "unit": "mM"
+            },
+            "solutes_present": [
+                "Na+",
+                "Cl-",
+                "In"
+            ],
+            "adsorbing": "In"
+        },
+        {
+            "membrane_or_polymer": "M58",
+            "ph": 10,
+            "ionic_strength": {
+                "value": 0.01,
+                "unit": "mM"
+            },
+            "solutes_present": [
+                "Na+",
+                "Cl-",
+                "In"
+            ],
+            "adsorbing": "In"
+        },
+        {
+            "membrane_or_polymer": "M58",
+            "pH": 7,
+            "ionic_strength": {
+                "value": 0.1,
+                "unit": "mM"
+            },
+            "solutes_present": [
+                "Na+",
+                "Cl-",
+                "In"
+            ],
+            "adsorbing": "In"
+        },
+        {
+            "membrane_or_polymer": "M58",
+            "ph": 10,
+            "ionic_strength": {
+                "value": 0.1,
+                "unit": "mM"
+            },
+            "solutes_present": [
+                "Na+",
+                "Cl-",
+                "In"
+            ],
+            "adsorbing": "In"
+        }
+    ],
+    "uid": "706436da-3c3d-4db4-b00f-2256b5a30fd6"
+}
