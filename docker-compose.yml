@@ -5,8 +5,6 @@ services:
     ports:
     - 80:80
     - 443:443
-    - 9200:9200
-    - 9300:9300
     volumes:
       - ./web/nginx.conf:/etc/nginx/nginx.conf
       - ../splash-client/dist:/usr/share/nginx/html
@@ -51,10 +49,10 @@ services:
     image: rwynn/monstache:rel6
     container_name: monstache
     working_dir: /app
-    command: -f ./monstache.config.toml -mongo-url=mongodb://db:27017 -elasticsearch-url=http://elasticsearch:9200  #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
+    command: -mongo-url=mongodb://db:27017 -elasticsearch-url=http://elasticsearch:9200  #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
     restart: unless-stopped
     volumes:
-    - ${MONSTACHE_DATA_LOC}/app:/app
+    - ${MONSTACHE_DATA_LOC}:/app
   app:
     build: 
       context: ../splash-server

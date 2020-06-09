@@ -1,15 +1,16 @@
 How to initialize the docker containers:
 
-Make sure to create all of the folders that will be used by the volumes first. Here, we are using /splash/data/mongo and /splash/data/elastic and /splash/data/monstache
+Make sure to create all of the folders that will be used by the volumes first. Here, we are using `/splash/data/mongo` and `/splash/data/elastic` and `/splash/data/monstache`
 
 Create a .env file and add the following (replacing with your folder names)
 
+```
 MONGO_DB_LOC=/splash/data/mongo
+
 ELASTIC_DATA_LOC=/splash/data/elastic
+
 MONSTACHE_DATA_LOC=/splash/data/monstache
-
-
-Now create a file called `monstache.config.toml` in the monstache volume directory. It may be necessary to set `elasticsearch-healthcheck-timeout` and `elasticsearch-healthcheck-timeout-startup` to larger values in this config file depending on how slow your computer is.
+```
 
 On Linux hosts run  `sysctl -w vm.max_map_count=262144`  and then `sysctl --system`
 
@@ -54,3 +55,16 @@ Run:
 Additionally if in development run: `pip install -r requirements-dev.txt`
 
 `python3 setup.py`
+
+
+Note: For some slow computers elastic will take too long to start up and so monstache will timeout when attempting to obtain a health check from elastic. If this happens then place a file named `./monstache.config.toml` inside `/splash/data/monstache`
+
+Within this file set `elasticsearch-healthcheck-timeout` and `elasticsearch-healthcheck-timeout-startup` to larger values. Here is a sample config file:
+```
+elasticsearch-healthcheck-timeout-startup=60
+elasticsearch-healthcheck-timeout=10
+```
+
+Within the `docker-compose.yml` file under the `command:` option for monstache add this argument `-f ./monstache.config.toml`
+
+Adjust the values as needed.
