@@ -19,7 +19,7 @@ Change your working directory to the top level directory
 
 These commands initialize the replica set for mongo:
 
-`docker-compose up db -d`
+`docker-compose up -d db`
 
 `docker exec -i splash_db_1 /bin/bash < ./init/init_mongo.sh`
 
