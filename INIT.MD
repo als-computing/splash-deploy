@@ -1,6 +1,15 @@
 How to initialize the docker containers:
 
-Make sure to create all of the folders that will be used by the volumes first. If you don't it creates weird permissions issues. Also create a file called `monstache.config.toml` in the monstache volume directory. It may be necessary to set `elasticsearch-healthcheck-timeout` and `elasticsearch-healthcheck-timeout-startup` to larger values in this config file depending on how slow your computer is.
+Make sure to create all of the folders that will be used by the volumes first. Here, we are using /splash/data/mongo and /splash/data/elastic and /splash/data/monstache
+
+Create a .env file and add the following (replacing with your folder names)
+
+MONGO_DB_LOC=/splash/data/mongo
+ELASTIC_DATA_LOC=/splash/data/elastic
+MONSTACHE_DATA_LOC=/splash/data/monstache
+
+
+Now create a file called `monstache.config.toml` in the monstache volume directory. It may be necessary to set `elasticsearch-healthcheck-timeout` and `elasticsearch-healthcheck-timeout-startup` to larger values in this config file depending on how slow your computer is.
 
 On Linux hosts run  `sysctl -w vm.max_map_count=262144`  and then `sysctl --system`
 
