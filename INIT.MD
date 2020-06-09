@@ -21,6 +21,11 @@ These commands initialize the replica set for mongo:
 
 `docker-compose up -d db`
 
+Find the name of your mongo container with 
+
+`docker ps` The following line assumes "splash_db_1", but that might be different on your system.
+
+
 `docker exec -i splash_db_1 /bin/bash < ./init/init_mongo.sh`
 
 `docker-compose stop db`
