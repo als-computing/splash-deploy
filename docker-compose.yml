@@ -28,7 +28,7 @@ services:
 ## see: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-prod-cluster-composefile
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.1
     container_name: elasticsearch
     environment:
       # - cluster.name=docker-cluster
