@@ -5,7 +5,6 @@ services:
     ports:
     - 80:80
     - 443:443
-    - 9200:9200
     volumes:
       - ./web/nginx.conf:/etc/nginx/nginx.conf
       - ../splash-client/dist:/usr/share/nginx/html
@@ -29,7 +28,7 @@ services:
 ## see: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-prod-cluster-composefile
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.1
     container_name: elasticsearch
     environment:
       # - cluster.name=docker-cluster
@@ -49,9 +48,11 @@ services:
   monstache:
     image: rwynn/monstache:rel6
     container_name: monstache
-    command: -mongo-url=mongodb://db:27017 -elasticsearch-url=http://elasticsearch:9200 #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
+    working_dir: /app
+    command: -mongo-url=mongodb://db:27017 -elasticsearch-url=http://elasticsearch:9200  #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
     restart: unless-stopped
-    
+    volumes:
+    - ${MONSTACHE_DATA_LOC}:/app
   app:
     build: 
       context: ../splash-server
