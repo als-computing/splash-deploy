@@ -19,90 +19,62 @@ def elastic_setup(host_url=None, index_name=None, alias=None):
     # So far the only configuration I have done is set up autocompletion
     # and keyword on select fields
     INDEX_CONFIG = {
-      "mappings": {
-        "properties": {
-          "name": {
-            "type": "text",
-            "fields": {
-              "autocomplete": {
-                "type": "completion"
-              },
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "researcher": {
+        "mappings": {
             "properties": {
-              "group": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  },
-                  "autocomplete": {
-                    "type": "completion"
-                  }
-                }
-              },
-              "institution": {
-                "type": "text",
-                "fields": {
-                  "autocomplete": {
-                    "type": "completion"
-                  },
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "name": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  },
-                  "autocomplete": {
-                    "type": "completion"
-                  }
-                }
-              }
-            }
-          },
-          "trials": {
-            "properties": {
-                "membrane_or_polymer": {
-                  "type": "text",
-                  "fields": {
-                      "autocomplete": {
-                        "type": "completion"
-                      },
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                  }
+                "name": {
+                    "type": "text",
+                    "fields": {
+                        "autocomplete": {
+                            "type": "completion"
+                        },
+                        "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                        }
+                    }
                 },
-                "solutes_present": {
-                  "type": "text",
-                  "fields": {
-                      "autocomplete": {
-                        "type": "completion"
-                      },
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                  }
-                }
+                "researcher": {
+                    "properties": {
+                        "group": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                },
+                                "autocomplete": {
+                                    "type": "completion"
+                                }
+                            }
+                        },
+                        "institution": {
+                            "type": "text",
+                            "fields": {
+                                "autocomplete": {
+                                    "type": "completion"
+                                },
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
+                        "name": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                },
+                                "autocomplete": {
+                                    "type": "completion"
+                                }
+                            }
+                        }
+                    }
+                },
             }
-          }
         }
-      }
     }
 
     # Connect with elastic
@@ -119,3 +91,173 @@ def elastic_setup(host_url=None, index_name=None, alias=None):
     # https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.client.IndicesClient.put_alias
 
     es.indices.put_alias(index=INDEX_NAME, name=ALIAS)
+
+
+INDEX_CONFIG_2 = {
+    # This setting makes it so that if a field in a document doesn't match the set datatype then
+    # elastic will still index the entire document but ignore that field
+    "settings": {"index.mapping.ignore_malformed": True},
+    "mappings": {
+        "properties": {
+            "project": {
+                "type": "text",
+                "fields": {
+                    "autocomplete": {
+                        "type": "completion"
+                    },
+                    "keyword": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "sample": {
+                "type": "text",
+                "fields": {
+                    "autocomplete": {
+                        "type": "completion"
+                    },
+                    "keyword": {
+                        "type": "keyword",
+                    }
+                }
+            },
+            "scan_id": {
+                "type": "integer"
+            },
+            "time": {
+                "type": "date"
+            },
+            "uid": {
+                "type": "text",
+                "fields": {
+                    "autocomplete": {
+                        "type": "completion"
+                    },
+                    "keyword": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "group": {
+                "type": "text",
+                "fields": {
+                    "autocomplete": {
+                        "type": "completion"
+                    },
+                    "keyword": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "owner": {
+                "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                            },
+                            "autocomplete": {
+                                "type": "completion"
+                            }
+                        }
+            },
+            "beamline_id": {
+                "type": "text",
+                "fields": {
+                    "autocomplete": {
+                        "type": "completion"
+                    },
+                    "keyword": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "user": {
+                "type": "text",
+                "fields": {
+                    "autocomplete": {
+                        "type": "completion"
+                    },
+                    "keyword": {
+                        "type": "keyword"
+                    }
+                }
+            }
+        },
+        "dynamic_templates": [
+            {
+                "long_to_string": {
+                    "match_mapping_type": "long",
+                    "mapping": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type":  "keyword",
+                                "ignore_above": 256
+                            },
+                        }
+                    }
+                },
+            },
+
+            {
+                "boolean_to_string": {
+                    "match_mapping_type": "boolean",
+                    "mapping": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type":  "keyword",
+                                "ignore_above": 256
+                            },
+                        }
+                    }
+                },
+            },
+
+            {
+                "date_to_string": {
+                    "match_mapping_type": "date",
+                    "mapping": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type":  "keyword",
+                                "ignore_above": 256
+                            },
+                        }
+                    }
+                },
+            },
+
+            {
+                "double_to_string": {
+                    "match_mapping_type": "double",
+                    "mapping": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type":  "keyword",
+                                "ignore_above": 256
+                            },
+                        }
+                    }
+                },
+            },
+
+            {
+                "strings": {
+                    "match_mapping_type": "string",
+                    "mapping": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type":  "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+}
