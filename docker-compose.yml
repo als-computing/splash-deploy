@@ -62,6 +62,8 @@ services:
     environment:
       LOGLEVEL: DEBUG
       SPLASH_SERVER_DIR: /app/splash
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      MONGO_DB_URL: mongodb://db:27017
     volumes:
       - ../splash-server:/app
     entrypoint: [ "uwsgi", "--socket", "0.0.0.0:3031", "--uid", "uwsgi", "--master", "--processes", "2", "--protocol", "uwsgi", "--wsgi-file", "run.py", "--callable", "app", "--stats", "127.0.0.1:1717", "--stats-http"]
