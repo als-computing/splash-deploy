@@ -63,6 +63,7 @@ services:
       LOGLEVEL: DEBUG
       SPLASH_SERVER_DIR: /app/splash
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY}
       MONGO_DB_URL: mongodb://db:27017
     volumes:
       - ../splash-server:/app
