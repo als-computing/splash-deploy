@@ -70,3 +70,9 @@ services:
     entrypoint: [ "uwsgi", "--socket", "0.0.0.0:3031", "--uid", "uwsgi", "--master", "--processes", "2", "--protocol", "uwsgi", "--wsgi-file", "run.py", "--callable", "app", "--stats", "127.0.0.1:1717", "--stats-http"]
     ports:
       - 8000:8000
+  stastd:
+    image: prom/statsd-exporter
+    container_name: statsd
+    expose:
+      - 9125
+      - 9102
