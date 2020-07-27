@@ -67,6 +67,8 @@ services:
       MONGO_DB_URL: mongodb://db:27017
     volumes:
       - ../splash-server:/app
+      - ./app/catalogs.yml:/usr/local/share/intake/catalogs.yml
+      - ${INGESTOR_PATH_TO_DATA}:/usr/local/data
     entrypoint: [ "uwsgi", "--socket", "0.0.0.0:3031", "--uid", "uwsgi", "--master", "--processes", "2", "--protocol", "uwsgi", "--wsgi-file", "run.py", "--callable", "app", "--stats", "127.0.0.1:1717", "--stats-http"]
     ports:
       - 8000:8000
