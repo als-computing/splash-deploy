@@ -23,6 +23,4 @@ services:
       SPLASH_SERVER_DIR: /app/splash
     volumes:
       - ../splash-server:/app
-      - ./app/catalogs.yml:/usr/local/share/intake/catalogs.yml
-      - ${INGESTOR_PATH_TO_DATA}:/usr/local/data
     entrypoint: ["flask", "run", "--host=0.0.0.0"]
