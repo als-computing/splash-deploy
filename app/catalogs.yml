@@ -1,0 +1,8 @@
+sources:
+    RSoXS_11012:
+      driver: bluesky-mongo-normalized-catalog
+      args:
+          metadatastore_db: mongodb://db:27017/splash
+          asset_registry_db: mongodb://db:27017/splash
+          root_map:
+            /ingestor/defined/path/to/data: /actual/path/to/data
