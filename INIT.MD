@@ -10,6 +10,14 @@ MONGO_DB_LOC=/splash/data/mongo
 ELASTIC_DATA_LOC=/splash/data/elastic
 ```
 
+In your .env file create the environment variable 
+`MONSTACHE_NAMESPACE_REGEX=^db_name\.run_start` where `db_name` is the name of the database with the run start documents. This will ensure that Monstache only copies over the `run_start` collection from the appropriate database.
+
+Then in the `init/python/config.py` change the `“index_name”` property of the `elastic` dict to `“db_name.run_start”`
+
+Change the `“alias”` property to what you would like to refer to the index using the REST endpoint of elastic. 
+
+
 On Linux hosts run  `sysctl -w vm.max_map_count=262144`  and then `sysctl --system`
 
 See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-prod-cluster-composefile
