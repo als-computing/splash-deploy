@@ -1,0 +1,2 @@
+# Will retry making a request on a failure using exponential backoff
+elasticsearch-retry=true
