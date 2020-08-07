@@ -49,10 +49,12 @@ services:
     image: rwynn/monstache:rel6
     container_name: monstache
     working_dir: /app
-    command: -mongo-url=mongodb://db:27017 -elasticsearch-url=http://elasticsearch:9200  #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
+    command: -f ./monstache.config.toml -mongo-url=mongodb://db:27017 -elasticsearch-url=http://elasticsearch:9200  #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
     restart: unless-stopped
+    environment: 
+      MONSTACHE_NS_REGEX: ${MONSTACHE_NAMESPACE_REGEX}
     volumes:
-    - ${MONSTACHE_DATA_LOC}:/app
+    - ./monstache:/app
   app:
     build: 
       context: ../splash-server
