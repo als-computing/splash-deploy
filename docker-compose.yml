@@ -2,9 +2,10 @@ version: "2.2"
 services:
   web:
     image: nginx
+    container_name: web
     ports:
-    - 80:80
-    - 443:443
+    - 8080:80
+
     volumes:
       - ./web/nginx.conf:/etc/nginx/nginx.conf
       - ../splash-client/dist:/usr/share/nginx/html
@@ -12,6 +13,7 @@ services:
   db:
     image: mongo:4.1
     hostname: mongo
+    container_name: db
     environment:
       - TZ=US/Pacific
     expose:
@@ -56,24 +58,26 @@ services:
     volumes:
     - ./monstache:/app
   app:
+    container_name: app
     build: 
       context: ../splash-server
       dockerfile: Dockerfile
     stdin_open: true
     tty: true
     environment:
+      APP_MODULE: "splash.api.main:app"
       LOGLEVEL: DEBUG
       SPLASH_SERVER_DIR: /app/splash
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY}
-      MONGO_DB_URL: mongodb://db:27017
+      FLASK_SECRET_KEY: ${SECRET_KEY}
+      MONGO_DB_URI: mongodb://db:27017
     volumes:
       - ../splash-server:/app
       - ./app/catalogs.yml:/usr/local/share/intake/catalogs.yml
       - ${INGESTOR_PATH_TO_DATA}:/usr/local/data
-    entrypoint: [ "uwsgi", "--socket", "0.0.0.0:3031", "--uid", "uwsgi", "--master", "--processes", "2", "--protocol", "uwsgi", "--wsgi-file", "run.py", "--callable", "app", "--stats", "127.0.0.1:1717", "--stats-http"]
     ports:
-      - 8000:8000
+      - 8000:80
+
   stastd:
     image: prom/statsd-exporter
     container_name: statsd
