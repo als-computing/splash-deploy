@@ -1,5 +1,5 @@
 elastic = {
-    "url": "http://localhost:80/search/",
+    "url": "http://localhost:8080/search/",
     "alias": "run_start",
     "index_name": "splash.run_start"
 }
