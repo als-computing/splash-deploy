@@ -1,14 +1,16 @@
-version: "2.2"
+version: "3"
 services:
   web:
-    image: nginx
+    build:
+      context: ../splash-client
+      dockerfile: Dockerfile
     container_name: web
     ports:
     - 80:80
-
     volumes:
       - ./web/nginx.conf:/etc/nginx/nginx.conf
-      - ../splash-client/dist:/usr/share/nginx/html
+      # - ../splash-client/dist:/usr/share/nginx/html
+    restart: always
 
   db:
     image: mongo:4.1
@@ -22,67 +24,26 @@ services:
     ports:
       - 27017:27017
     restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all"]
     volumes:
       - ${MONGO_DB_LOC}:/data/db
 
-## On Linux hosts, you need to set sysctl -w vm.max_map_count=262144
-## see: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-prod-cluster-composefile
-
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.1
-    container_name: elasticsearch
-    hostname: elasticsearch
-    environment:
-      # - cluster.name=docker-cluster
-      # - bootstrap.memory_lock=true
-      #- "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"\
-      - discovery.type=single-node
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - ${ELASTIC_DATA_LOC}:/usr/share/elasticsearch/data
-    expose:
-      - 9200
-      - 9300
-
-  monstache:
-    image: rwynn/monstache:rel6
-    container_name: monstache
-    working_dir: /app
-    command: -f ./monstache.config.toml -mongo-url=mongodb://db:27017 -elasticsearch-url=http://elasticsearch:9200  #-direct-read-namespace=db.heartbeat -direct-read-split-max=2
-    restart: unless-stopped
-    environment: 
-      MONSTACHE_NS_REGEX: ${MONSTACHE_NAMESPACE_REGEX}
-    volumes:
-    - ./monstache:/app
   app:
-    container_name: app
-    build: 
+    build:
       context: ../splash-server
       dockerfile: Dockerfile
-    stdin_open: true
-    tty: true
     environment:
       APP_MODULE: "splash.api.main:app"
       LOGLEVEL: DEBUG
-      SPLASH_SERVER_DIR: /app/splash
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      TOKEN_SECRET_KEY: ${SECRET_KEY}
+      PORT: 80
       MONGO_DB_URI: mongodb://db:27017
+      MAX_WORKERS: 1
     volumes:
       - ../splash-server:/app
       - ./app/catalogs.yml:/usr/local/share/intake/catalogs.yml
       - ${INGESTOR_PATH_TO_DATA}:/usr/local/data
-    ports:
-      - 8000:80
-
-  stastd:
-    image: prom/statsd-exporter
-    container_name: statsd
-    expose:
-      - 9125
-      - 9102
+    # ports:
+    #   - 80:8080
+    restart: always
+    entrypoint: /start-reload.sh
