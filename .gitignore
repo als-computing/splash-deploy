@@ -92,3 +92,4 @@ docker-compose.timeout-override.yml
 mongo/
 
 elastic/
+.netrc.gpg
